@@ -1,0 +1,93 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.11'
+}
+
+group 'com.dev'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+
+
+
+project.ext.lwjglVersion = "3.2.0"
+project.ext.jomlVersion = "1.9.11"
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "natives-windows"
+        break
+    case OperatingSystem.LINUX:
+        project.ext.lwjglNatives = "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos"
+        break
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // LWJGL dependencies
+    compile "org.lwjgl:lwjgl:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-opengl:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-openal:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-nanovg:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-stb:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-assimp:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-vulkan:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-egl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-opengles:$lwjglVersion"
+
+    // LWJGL natives Windows
+    runtime "org.lwjgl:lwjgl:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-opengl:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-nanovg:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-stb:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-assimp:${lwjglVersion}:natives-windows"
+    runtime "org.lwjgl:lwjgl-opengles:${lwjglVersion}:natives-windows"
+    // LWJGL Natives Linux
+    runtime "org.lwjgl:lwjgl:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-opengl:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-nanovg:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-stb:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-assimp:${lwjglVersion}:natives-linux"
+    runtime "org.lwjgl:lwjgl-opengles:${lwjglVersion}:natives-linux"
+    // LWJGL Natives OSX
+    runtime "org.lwjgl:lwjgl:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-opengl:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-openal:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-nanovg:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-stb:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-assimp:${lwjglVersion}:natives-macos"
+    runtime "org.lwjgl:lwjgl-opengles:${lwjglVersion}:natives-macos"
+
+    compile "it.unimi.dsi:fastutil:8.2.2"
+    compile "org.joml:joml:${jomlVersion}"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
