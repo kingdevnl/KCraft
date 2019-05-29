@@ -1,7 +1,9 @@
 package com.dev.kcraft.display
 
-import com.dev.kcraft.model.Model
 import com.dev.kcraft.render.ModelRender
+import com.dev.kcraft.render.model.Model
+import com.dev.kcraft.render.shader.BasicShader
+import com.dev.kcraft.render.shader.Shader
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.*
@@ -14,7 +16,10 @@ class Display(var width: Int, var height: Int, var title: String) {
 
     lateinit var myModel: Model
 
-    private var debug = false;
+    private var debug = false
+
+    lateinit var myShader: BasicShader
+
     fun create() {
 
         if (!glfwInit()) {
@@ -39,25 +44,24 @@ class Display(var width: Int, var height: Int, var title: String) {
             GLUtil.setupDebugMessageCallback()
 
 
+        myShader = BasicShader()
 
         myModel = Model(
-
             floatArrayOf(
                 -0.5f, 0.5f, 0.0f,
                 0.5f, 0.5f, 0.0f,
                 -0.5f, -0.5f, 0.0f,
                 0.5f, -0.5f, 0.0f
-
             ),
             intArrayOf(
                 0, 1, 2, 2, 3, 1
 
             )
-
         )
 
 
 
+        myShader.create()
         myModel.create()
 
     }
@@ -66,6 +70,8 @@ class Display(var width: Int, var height: Int, var title: String) {
 
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
+
+        myShader.bind()
         ModelRender.renderModel(myModel)
 
         glfwSwapBuffers(this.windowID)

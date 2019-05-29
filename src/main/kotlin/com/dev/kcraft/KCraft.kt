@@ -23,6 +23,7 @@ object KCraft {
         }
         println("Stop")
         display.myModel.remove()
+        display.myShader.remove()
 
     }
 

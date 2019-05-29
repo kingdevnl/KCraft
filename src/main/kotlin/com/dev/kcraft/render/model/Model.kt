@@ -1,4 +1,4 @@
-package com.dev.kcraft.model
+package com.dev.kcraft.render.model
 
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL15
@@ -20,11 +20,11 @@ class Model(val vertecies: FloatArray, val indices: IntArray) {
     public fun create() {
 
 
-        var buffer = BufferUtils.createFloatBuffer(vertecies.size)
+        val buffer = BufferUtils.createFloatBuffer(vertecies.size)
         buffer.put(vertecies)
         buffer.flip()
 
-        var indicesBuffer = BufferUtils.createIntBuffer(indices.size)
+        val indicesBuffer = BufferUtils.createIntBuffer(indices.size)
         indicesBuffer.put(indices)
         indicesBuffer.flip()
 
