@@ -4,6 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.glClearColor
+import org.lwjgl.opengl.GL11.glViewport
 import org.lwjgl.opengl.GLUtil
 import org.lwjgl.system.MemoryUtil.NULL
 
@@ -33,6 +34,7 @@ class Display(var width: Int, var height: Int, var title: String) {
         windowID = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL)
 
 
+
         glfwSetKeyCallback(windowID) { window, key, scancode, action, mods ->
 
             if (action == GLFW_PRESS) {
@@ -49,8 +51,10 @@ class Display(var width: Int, var height: Int, var title: String) {
         }
 
 
-
         glfwMakeContextCurrent(this.windowID)
+
+
+
         glfwSwapInterval(1)
         glfwShowWindow(windowID)
 
@@ -58,7 +62,9 @@ class Display(var width: Int, var height: Int, var title: String) {
         if (debug)
             GLUtil.setupDebugMessageCallback()
 
-
+        glfwSetWindowSizeCallback(windowID) {window, width, height ->
+            glViewport(0,0, width, height)
+        }
     }
 
     fun isKeyDown(key: Int): Boolean {
