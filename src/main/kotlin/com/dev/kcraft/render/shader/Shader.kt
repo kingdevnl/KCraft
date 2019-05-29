@@ -3,7 +3,10 @@ package com.dev.kcraft.render.shader
 import org.lwjgl.opengl.GL11.GL_FALSE
 import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL20.*
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -43,6 +46,7 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
         if (GL20.glGetProgrami(programID, GL_VALIDATE_STATUS) == GL_FALSE) {
             System.err.println("Error validate  - ${GL20.glGetShaderInfoLog(programID)}")
         }
+        println("Created shader $programID")
 
 
     }
@@ -67,7 +71,14 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
 
     private fun readFile(file: String): String {
         try {
-            return String(Files.readAllBytes(Paths.get(javaClass.getResource("/$file").toURI())))
+
+            val stream = javaClass.getResourceAsStream("/shaders/$file")
+            val bytes =  ByteArray(stream.available())
+            stream.read(bytes)
+            stream.close()
+            val code = String(bytes)
+
+            return code
 
         } catch (err: IOException) {
             err.printStackTrace()

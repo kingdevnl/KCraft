@@ -13,7 +13,7 @@ object KCraft {
         println("Loading up KCraft.")
         display = Display(1080, 720, "KCraft")
         display.create()
-        val test = ArrayList<String>()
+
 
 
 
