@@ -37,6 +37,14 @@ object KCraft {
             shader.bind()
             modelRender.renderModelEntity(Models.testEntity)
 
+            if(display.isKeyDown(GLFW.GLFW_KEY_D)) {
+                Models.testEntity.position.x+=0.02f
+            }
+
+            if(display.isKeyDown(GLFW.GLFW_KEY_A)) {
+                Models.testEntity.position.x-=0.02f
+            }
+
             GLFW.glfwSwapBuffers(this.display.windowID)
 
             GLFW.glfwPollEvents()

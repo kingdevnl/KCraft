@@ -1,14 +1,9 @@
 package com.dev.kcraft.engine.display
 
-import com.dev.kcraft.engine.render.ModelRender
-import com.dev.kcraft.engine.render.model.TexturedModel
-import com.dev.kcraft.engine.render.model.UntexturedModel
-import com.dev.kcraft.engine.render.shader.BasicShader
-import com.dev.kcraft.engine.render.texture.Texture
-import com.dev.kcraft.engine.render.texture.TextureLoader
+import com.sun.org.apache.xpath.internal.operations.Bool
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL11.glClearColor
 import org.lwjgl.opengl.GLUtil
 import org.lwjgl.system.MemoryUtil.NULL
 
@@ -16,9 +11,10 @@ class Display(var width: Int, var height: Int, var title: String) {
 
     var windowID: Long = 0
 
-
-
     private var debug = false
+
+
+    var pressedKeys = ArrayList<Int>()
 
 
     fun create() {
@@ -36,6 +32,24 @@ class Display(var width: Int, var height: Int, var title: String) {
 
         windowID = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL)
 
+
+        glfwSetKeyCallback(windowID) { window, key, scancode, action, mods ->
+
+            if (action == GLFW_PRESS) {
+                pressedKeys.add(key)
+            } else if (action == GLFW_RELEASE) {
+                pressedKeys.remove(key)
+            }
+
+
+            if (key == GLFW_KEY_END && action == GLFW_RELEASE) {
+                glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
+            }
+
+        }
+
+
+
         glfwMakeContextCurrent(this.windowID)
         glfwSwapInterval(1)
         glfwShowWindow(windowID)
@@ -47,10 +61,10 @@ class Display(var width: Int, var height: Int, var title: String) {
 
     }
 
-    fun render() {
-
-
+    fun isKeyDown(key: Int): Boolean {
+        return pressedKeys.contains(key)
     }
+
 
     fun shouldShow(): Boolean {
         return !glfwWindowShouldClose(this.windowID)
