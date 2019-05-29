@@ -6,5 +6,7 @@ class Texture(val id: Int) {
 
     fun remove() {
         GL11.glDeleteTextures(id)
+        println("Deleted texture $id")
+
     }
 }

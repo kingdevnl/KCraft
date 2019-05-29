@@ -1,5 +1,6 @@
 package com.dev.kcraft.engine.render.shader
 
+import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.joml.Vector4f
 import org.lwjgl.BufferUtils
@@ -44,7 +45,10 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
         if (GL20.glGetProgrami(programID, GL_VALIDATE_STATUS) == GL_FALSE) {
             System.err.println("Error validate  - ${GL20.glGetShaderInfoLog(programID)}")
         }
+
+        getAllUniforms()
         println("Created shader $programID")
+
 
 
     }
@@ -60,6 +64,7 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
         GL20.glDeleteShader(vertexShaderID)
         GL20.glDeleteShader(fragmentShaderID)
         GL20.glDeleteProgram(programID)
+        println("Deleted shader $programID")
     }
 
     public abstract fun bindAllAttributes()
@@ -84,14 +89,13 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
         GL20.glUniform3f(location, value.x, value.y, value.z)
     }
 
-    public fun loadMatrixUniform(location: Int, value: Vector4f) {
+    public fun loadMatrixUniform(location: Int, value: Matrix4f) {
         var buffer = BufferUtils.createFloatBuffer(16)
         value.get(buffer)
-        buffer.flip()
+
 
         GL20.glUniformMatrix4fv(location, false, buffer)
     }
-
 
     public abstract fun getAllUniforms()
     private fun readFile(file: String): String {

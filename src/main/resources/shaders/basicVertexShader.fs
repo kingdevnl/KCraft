@@ -5,10 +5,10 @@ in vec2 textCoords;
 
 out vec2 passTextCoords;
 
-uniform float myScale;
+uniform mat4 transformation;
 
 void main() {
 
-    gl_Position = vec4(position*myScale, 1.0);
+    gl_Position = transformation*vec4(position, 1.0);
     passTextCoords = textCoords;
 }

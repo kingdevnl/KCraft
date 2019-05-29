@@ -1,10 +1,13 @@
 package com.dev.kcraft.engine.render.shader
 
+import org.joml.Matrix4f
+
 
 class BasicShader : Shader(VERTEX_FILE, FRAGMENT_FILE) {
 
 
     private var scaleLocation: Int = 0
+    private var transformationLocation: Int =0
 
     companion object {
         private val VERTEX_FILE = "basicVertexShader.fs"
@@ -17,11 +20,11 @@ class BasicShader : Shader(VERTEX_FILE, FRAGMENT_FILE) {
     }
 
     override fun getAllUniforms() {
-        scaleLocation = super.getUniform("myScale")
-        println("loc $scaleLocation")
-
+        transformationLocation = super.getUniform("transformation")
     }
-    public fun loadScale(scale: Float) {
-        super.loadFloatUniform(scaleLocation, scale)
+
+    public fun loadTransformationMatrix(matrix: Matrix4f) {
+        super.loadMatrixUniform(transformationLocation, matrix)
+
     }
 }

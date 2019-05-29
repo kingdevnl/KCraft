@@ -17,12 +17,9 @@ class Display(var width: Int, var height: Int, var title: String) {
     var windowID: Long = 0
 
 
-    lateinit var myTexturedModel: TexturedModel
-    lateinit var myTexture: Texture
 
     private var debug = false
 
-    lateinit var myShader: BasicShader
 
     fun create() {
 
@@ -48,49 +45,11 @@ class Display(var width: Int, var height: Int, var title: String) {
             GLUtil.setupDebugMessageCallback()
 
 
-
-
-        myShader = BasicShader()
-        myTexture = TextureLoader.loadTexture("dirt.png")
-
-        myTexturedModel = TexturedModel(
-            floatArrayOf(
-                -0.5f, 0.5f, 0f,  //TOP LEFT V0
-                0.5f, 0.5f, 0f,  //TOP RIGHT V1
-                0.5f, -0.5f, 0f, //BOTTOM RIGHT V2
-                -0.5f, -0.5f, 0f  //BOTTOM LEFT V3
-            ),
-            floatArrayOf(
-                0f, 0f,           //TOP LEFT V0
-                1f, 0f,           //TOP RIGHT V1
-                1f, 1f,           //BOTTOM RIGHT V2
-                0f, 1f            //BOTTOM LEFT V3
-            ),
-            intArrayOf(
-                0, 1, 2,        //Triangle 1
-                2, 3, 0         //Triangle 2
-            ),
-            myTexture
-        )
-
-
-
-        myShader.create()
-
-
     }
 
     fun render() {
 
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-        myShader.loadScale(0.5f)
-        myShader.bind()
-        ModelRender.renderModel(myTexturedModel)
-
-        glfwSwapBuffers(this.windowID)
-
-        glfwPollEvents()
     }
 
     fun shouldShow(): Boolean {
