@@ -76,6 +76,11 @@ dependencies {
 
     shade "it.unimi.dsi:fastutil:8.2.2"
     shade "org.joml:joml:${jomlVersion}"
+
+
+    // https://mvnrepository.com/artifact/org.l33tlabs.twl/pngdecoder
+    shade group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
+
 }
 
 compileKotlin {

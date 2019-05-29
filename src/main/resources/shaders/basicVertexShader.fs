@@ -1,12 +1,13 @@
 #version 400 core
 
 in vec3 verices;
+in vec2 textCoords;
 
-out vec4 color;
+out vec2 passTextCoords;
+
 
 void main() {
 
     gl_Position = vec4(verices, 1.0);
-    color = vec4(verices.x + 0.5, 1.0, verices.y + 0.5, 1.0);
-
+    passTextCoords = textCoords;
 }

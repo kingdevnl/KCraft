@@ -1,9 +1,11 @@
-package com.dev.kcraft.display
+package com.dev.kcraft.engine.display
 
-import com.dev.kcraft.render.ModelRender
-import com.dev.kcraft.render.model.Model
-import com.dev.kcraft.render.shader.BasicShader
-import com.dev.kcraft.render.shader.Shader
+import com.dev.kcraft.engine.render.ModelRender
+import com.dev.kcraft.engine.render.model.TexturedModel
+import com.dev.kcraft.engine.render.model.UntexturedModel
+import com.dev.kcraft.engine.render.shader.BasicShader
+import com.dev.kcraft.engine.render.texture.Texture
+import com.dev.kcraft.engine.render.texture.TextureLoader
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.*
@@ -14,7 +16,9 @@ class Display(var width: Int, var height: Int, var title: String) {
 
     var windowID: Long = 0
 
-    lateinit var myModel: Model
+
+    lateinit var myTexturedModel: TexturedModel
+    lateinit var myTexture: Texture
 
     private var debug = false
 
@@ -44,25 +48,34 @@ class Display(var width: Int, var height: Int, var title: String) {
             GLUtil.setupDebugMessageCallback()
 
 
-        myShader = BasicShader()
 
-        myModel = Model(
+
+        myShader = BasicShader()
+        myTexture = TextureLoader.loadTexture("dirt.png")
+
+        myTexturedModel = TexturedModel(
             floatArrayOf(
-                -0.5f, 0.5f, 0.0f,
-                0.5f, 0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f
+                -0.5f, 0.5f, 0f,  //TOP LEFT V0
+                0.5f, 0.5f, 0f,  //TOP RIGHT V1
+                0.5f, -0.5f, 0f, //BOTTOM RIGHT V2
+                -0.5f, -0.5f, 0f  //BOTTOM LEFT V3
+            ),
+            floatArrayOf(
+                0f, 0f,           //TOP LEFT V0
+                1f, 0f,           //TOP RIGHT V1
+                1f, 1f,           //BOTTOM RIGHT V2
+                0f, 1f            //BOTTOM LEFT V3
             ),
             intArrayOf(
-                0, 1, 2, 2, 3, 1
-
-            )
+                0, 1, 2,        //Triangle 1
+                2, 3, 0         //Triangle 2
+            ),
+            myTexture
         )
 
 
-
         myShader.create()
-        myModel.create()
+
 
     }
 
@@ -72,7 +85,7 @@ class Display(var width: Int, var height: Int, var title: String) {
 
 
         myShader.bind()
-        ModelRender.renderModel(myModel)
+        ModelRender.renderModel(myTexturedModel)
 
         glfwSwapBuffers(this.windowID)
 

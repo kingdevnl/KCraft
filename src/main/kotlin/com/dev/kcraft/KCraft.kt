@@ -1,7 +1,7 @@
 package com.dev.kcraft
 
-import com.dev.kcraft.display.Display
-import java.util.*
+import com.dev.kcraft.engine.display.Display
+import com.dev.kcraft.engine.render.model.TexturedModel
 
 object KCraft {
 
@@ -17,12 +17,12 @@ object KCraft {
 
 
 
-        display.clearColor(0f, 0f,  0f)
+        display.clearColor(0f, 0f, 0f)
         while (display.shouldShow()) {
             display.render()
         }
         println("Stop")
-        display.myModel.remove()
+        display.myTexturedModel.remove()
         display.myShader.remove()
 
     }

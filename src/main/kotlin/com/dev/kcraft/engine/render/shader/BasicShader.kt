@@ -1,4 +1,4 @@
-package com.dev.kcraft.render.shader
+package com.dev.kcraft.engine.render.shader
 
 
 class BasicShader : Shader(VERTEX_FILE, FRAGMENT_FILE) {
@@ -11,6 +11,7 @@ class BasicShader : Shader(VERTEX_FILE, FRAGMENT_FILE) {
 
     override fun bindAllAttributes() {
         super.bindAttribute(0, "vertices")
+        super.bindAttribute(1, "textCoords")
     }
 
 }
