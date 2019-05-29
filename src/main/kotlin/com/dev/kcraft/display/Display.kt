@@ -1,17 +1,20 @@
 package com.dev.kcraft.display
 
-import org.lwjgl.glfw.Callbacks.*
+import com.dev.kcraft.model.Model
+import com.dev.kcraft.render.ModelRender
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11.*
-import org.lwjgl.system.MemoryStack.*
-import org.lwjgl.system.MemoryUtil.*
+import org.lwjgl.opengl.GLUtil
+import org.lwjgl.system.MemoryUtil.NULL
 
 class Display(var width: Int, var height: Int, var title: String) {
 
     var windowID: Long = 0
 
+    lateinit var myModel: Model
 
+    private var debug = false;
     fun create() {
 
         if (!glfwInit()) {
@@ -22,6 +25,8 @@ class Display(var width: Int, var height: Int, var title: String) {
         glfwDefaultWindowHints()
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
+        if (debug)
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE)
 
         windowID = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL)
 
@@ -30,6 +35,30 @@ class Display(var width: Int, var height: Int, var title: String) {
         glfwShowWindow(windowID)
 
         GL.createCapabilities()
+        if (debug)
+            GLUtil.setupDebugMessageCallback()
+
+
+
+        myModel = Model(
+
+            floatArrayOf(
+                -0.5f, 0.5f, 0.0f,
+                0.5f, 0.5f, 0.0f,
+                -0.5f, -0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f
+
+            ),
+            intArrayOf(
+                0, 1, 2, 2, 3, 1
+
+            )
+
+        )
+
+
+
+        myModel.create()
 
     }
 
@@ -37,13 +66,15 @@ class Display(var width: Int, var height: Int, var title: String) {
 
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
+        ModelRender.renderModel(myModel)
+
         glfwSwapBuffers(this.windowID)
 
         glfwPollEvents()
     }
 
     fun shouldShow(): Boolean {
-    return !glfwWindowShouldClose(this.windowID)
+        return !glfwWindowShouldClose(this.windowID)
     }
 
     fun clearColor() {
