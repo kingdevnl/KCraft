@@ -83,8 +83,8 @@ class Display(var width: Int, var height: Int, var title: String) {
         return !glfwWindowShouldClose(this.windowID)
     }
 
-    fun clearColor() {
-        glClearColor(1.0f, 0f, 0f, 0f)
+    fun clearColor(r: Float, g: Float, b: Float) {
+        glClearColor(r, g, b, 0f)
     }
 
 }
