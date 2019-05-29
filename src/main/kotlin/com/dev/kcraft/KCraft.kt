@@ -9,6 +9,7 @@ import com.dev.kcraft.test.Models
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL11
 
+
 object KCraft {
 
     lateinit var display: Display
@@ -36,6 +37,17 @@ object KCraft {
 
             shader.bind()
             modelRender.renderModelEntity(Models.testEntity)
+
+
+
+            if(display.isKeyDown(GLFW.GLFW_KEY_W)) {
+                Models.testEntity.position.y+=0.02f
+            }
+            if(display.isKeyDown(GLFW.GLFW_KEY_S)) {
+                Models.testEntity.position.y-=0.02f
+            }
+
+
 
             if(display.isKeyDown(GLFW.GLFW_KEY_D)) {
                 Models.testEntity.position.x+=0.02f

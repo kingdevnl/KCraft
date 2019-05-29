@@ -39,7 +39,7 @@ object Models {
         )
         models.add(testModel)
 
-        testEntity = ModelEntity(testModel, Vector3f(-1f, 0f,0f), Vector3f(0f, 0f, 0f), Vector3f(1f, 0.5f, 1f) )
+        testEntity = ModelEntity(testModel)
 
 
     }
