@@ -15,8 +15,6 @@ object KCraft {
         display.create()
 
 
-
-
         display.clearColor(0f, 0f, 0f)
         while (display.shouldShow()) {
             display.render()

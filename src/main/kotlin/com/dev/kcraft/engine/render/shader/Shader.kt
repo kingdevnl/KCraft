@@ -1,5 +1,8 @@
 package com.dev.kcraft.engine.render.shader
 
+import org.joml.Vector3f
+import org.joml.Vector4f
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11.GL_FALSE
 import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL20.*
@@ -50,6 +53,7 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
         GL20.glUseProgram(programID)
 
     }
+
     public fun remove() {
         GL20.glDetachShader(programID, vertexShaderID)
         GL20.glDetachShader(programID, fragmentShaderID)
@@ -59,16 +63,42 @@ abstract class Shader(var vertexFile: String, var fragmentFile: String) {
     }
 
     public abstract fun bindAllAttributes()
-    public fun bindAttribute(index: Int, location: String)  {
-        GL20.glBindAttribLocation(programID,index, location)
 
+    public fun bindAttribute(index: Int, location: String) {
+        GL20.glBindAttribLocation(programID, index, location)
     }
 
+    public fun getUniform(name: String): Int {
+        return GL20.glGetUniformLocation(programID, name)
+    }
+
+    public fun loadFloatUniform(location: Int, value: Float) {
+        GL20.glUniform1f(location, value)
+    }
+
+    public fun loadIntUniform(location: Int, value: Int) {
+        GL20.glUniform1i(location, value)
+    }
+
+    public fun loadVectorUniform(location: Int, value: Vector3f) {
+        GL20.glUniform3f(location, value.x, value.y, value.z)
+    }
+
+    public fun loadMatrixUniform(location: Int, value: Vector4f) {
+        var buffer = BufferUtils.createFloatBuffer(16)
+        value.get(buffer)
+        buffer.flip()
+
+        GL20.glUniformMatrix4fv(location, false, buffer)
+    }
+
+
+    public abstract fun getAllUniforms()
     private fun readFile(file: String): String {
         try {
 
             val stream = javaClass.getResourceAsStream("/shaders/$file")
-            val bytes =  ByteArray(stream.available())
+            val bytes = ByteArray(stream.available())
             stream.read(bytes)
             stream.close()
             val code = String(bytes)

@@ -1,7 +1,7 @@
 package com.dev.kcraft.engine.render.model
 
 import com.dev.kcraft.engine.render.texture.Texture
-import org.lwjgl.opengl.GL15
+
 import org.lwjgl.opengl.GL30
 
 

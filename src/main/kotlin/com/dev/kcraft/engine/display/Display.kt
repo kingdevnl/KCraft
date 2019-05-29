@@ -74,6 +74,7 @@ class Display(var width: Int, var height: Int, var title: String) {
         )
 
 
+
         myShader.create()
 
 
@@ -83,7 +84,7 @@ class Display(var width: Int, var height: Int, var title: String) {
 
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
-
+        myShader.loadScale(0.5f)
         myShader.bind()
         ModelRender.renderModel(myTexturedModel)
 
