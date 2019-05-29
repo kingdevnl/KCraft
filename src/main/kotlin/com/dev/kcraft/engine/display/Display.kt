@@ -35,14 +35,12 @@ class Display(var width: Int, var height: Int, var title: String) {
 
 
 
-        glfwSetKeyCallback(windowID) { window, key, scancode, action, mods ->
+        glfwSetKeyCallback(windowID) { window, key, scancode, action, _ ->
 
+            pressedKeys.remove(key)
             if (action == GLFW_PRESS) {
                 pressedKeys.add(key)
-            } else if (action == GLFW_RELEASE) {
-                pressedKeys.remove(key)
             }
-
 
             if (key == GLFW_KEY_END && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
@@ -52,7 +50,6 @@ class Display(var width: Int, var height: Int, var title: String) {
 
 
         glfwMakeContextCurrent(this.windowID)
-
 
 
         glfwSwapInterval(1)
