@@ -76,9 +76,9 @@ public enum EngineMaster {
             cameraInc.z = 1;
         }
         if (display.isKeyDown(GLFW_KEY_A)) {
-            cameraInc.x = -1;
+            cameraInc.x = -1.5f;
         } else if (display.isKeyDown(GLFW_KEY_D)) {
-            cameraInc.x = 1;
+            cameraInc.x = 1.5f;
         }
         if (display.isKeyDown(GLFW_KEY_Z)) {
             cameraInc.y = -1;
@@ -87,19 +87,30 @@ public enum EngineMaster {
         }
 
 
+        if (display.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+            cameraInc.y = 1;
+        } else if (display.isKeyDown(GLFW_KEY_LEFT_CONTROL)) {
+            cameraInc.y = -1;
+        }
+
+
+        int speedInc = 9;
+
         if(display.isKeyDown((GLFW_KEY_LEFT))) {
-            camera.moveRotation(0, -MOUSE_SENSITIVITY*5, 0);
+            camera.moveRotation(0, -MOUSE_SENSITIVITY*speedInc, 0);
         }
         if(display.isKeyDown((GLFW_KEY_RIGHT))) {
-            camera.moveRotation(0, MOUSE_SENSITIVITY*5, 0);
+            camera.moveRotation(0, MOUSE_SENSITIVITY*speedInc, 0);
         }
 
         if(display.isKeyDown((GLFW_KEY_UP))) {
-            camera.moveRotation(-MOUSE_SENSITIVITY*5, 0, 0);
+            camera.moveRotation(-MOUSE_SENSITIVITY*speedInc, 0, 0);
         }
         if(display.isKeyDown((GLFW_KEY_DOWN))) {
-            camera.moveRotation(MOUSE_SENSITIVITY*5, 0, 0);
+            camera.moveRotation(MOUSE_SENSITIVITY*speedInc, 0, 0);
         }
+
+
 
         mouseInput.input(display);
 //        if (!mouseInput.isRightButtonPressed()) {

@@ -169,11 +169,7 @@ public class RenderMaster {
             Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
             shader.setUniform("modelViewMatrix", modelViewMatrix);
 
-            Vector3f currentRot = gameItem.getRotation();
 
-            currentRot.x+=.2f;
-            currentRot.y+=.2f;
-            gameItem.setRotation(currentRot.x, currentRot.y, currentRot.z);
 
             glEnable(GL_DEPTH_TEST);
             renderMesh(gameItem.getMesh());
