@@ -83,9 +83,8 @@ public class RenderMaster {
         shader.setUniform("colour", gameItem.getMesh().getColour());
         shader.setUniform("useColour", gameItem.getMesh().hasTexture() ? 0 : 1);
 
-        glEnable(GL_DEPTH_TEST);
         renderMesh(gameItem.getMesh());
-        glDisable(GL_DEPTH_TEST);
+
 
     }
 
@@ -113,6 +112,8 @@ public class RenderMaster {
         for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
             renderer.render(this, display, camera, shader, RenderState.POST);
         }
+
+
 
     }
 

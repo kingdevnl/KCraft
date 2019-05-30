@@ -75,7 +75,7 @@ public enum EngineMaster {
                 glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
             }
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            display.clear();
             if (wireFrameMode) {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             } else {
