@@ -74,13 +74,17 @@ public class RenderMaster {
     private ArrayList<GameItem> gameItems = new ArrayList<>();
 
     public void render(Camera camera) {
+
+       EngineMaster.INSTANCE.getGameLogic().render(this, camera, shader, RenderState.PRE);
+
+
         shader.bind();
         Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, display.getWidth(), display.getHeight(), Z_NEAR, Z_FAR);
 
         shader.setUniform("projectionMatrix", projectionMatrix);
         Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 
-        EngineMaster.INSTANCE.getGameLogic().render(this, camera, shader, RenderState.PRE);
+
 
 
         for (GameItem gameItem : gameItems) {
@@ -93,6 +97,7 @@ public class RenderMaster {
             renderMesh(gameItem.getMesh());
             glDisable(GL_DEPTH_TEST);
         }
+        shader.unbind();
     }
 
 

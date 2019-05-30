@@ -27,9 +27,14 @@ public abstract class IGameLogic {
         return engine.renderMaster;
     }
 
+    public Display getDisplay() {
+        return engine.display;
+    }
+
     public void addGameItem(GameItem gameItem) {
         getRenderMaster().getGameItems().add(gameItem);
     }
+
 
 
 

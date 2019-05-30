@@ -7,18 +7,17 @@ import com.kcraft.engine.IGameLogic;
 import com.kcraft.engine.RenderState;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
-import com.kcraft.engine.render.Mesh;
 import com.kcraft.engine.render.RenderMaster;
-import com.kcraft.engine.render.model.OBJLoader;
 import com.kcraft.engine.shader.Shader;
-import com.kcraft.engine.texture.Texture;
-import com.kcraft.engine.texture.TextureLoader;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 import com.kcraft.game.meshes.BlockMeshes;
+import com.kcraft.game.world.World;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static org.lwjgl.opengl.GL11.*;
 
 
 public class KCraft extends IGameLogic {
@@ -33,26 +32,17 @@ public class KCraft extends IGameLogic {
     }
 
 
-    private ArrayList<GameItem> blocks = new ArrayList<>();
+    private World world;
+
 
     @Override
     public void init(Display display) {
 
+        world = new World("Default", 20);
         try {
             BlockMeshes.createMeshes();
-
-            for (int x = 0; x < 20; x++) {
-                for (int z = 0; z < 20; z++) {
-                    Block block = new Block(BlockType.GRASS);
-
-                    block.setPosition(1+x, 0, -2+-z);
-
-                    addGameItem(block);
-
-                }
-            }
-
-
+            world.generateFlatWorld();
+            world.updateRenderItems();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,8 +57,15 @@ public class KCraft extends IGameLogic {
     }
 
 
+    private int frames;
     @Override
     public void update() {
+
+        frames++;
+        if(frames >= 10) {
+            world.updateRenderItems();
+            frames =0;
+        }
 
     }
 

@@ -87,6 +87,9 @@ public class Shader {
     public void bind() {
         glUseProgram(programID);
     }
+    public void unbind(){
+        glUseProgram(0);
+    }
     public void remove() {
         glDetachShader(programID, fragmentShaderID);
         glDetachShader(programID, vertexShaderID);

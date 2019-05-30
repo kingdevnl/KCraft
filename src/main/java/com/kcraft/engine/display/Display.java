@@ -102,4 +102,8 @@ public class Display {
     public long getWindowID() {
         return window;
     }
+
+    public void setTitle(String title) {
+        glfwSetWindowTitle(window, title);
+    }
 }
