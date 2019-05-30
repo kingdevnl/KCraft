@@ -1,13 +1,12 @@
 package com.kcraft.engine.render;
 
+import com.kcraft.engine.EngineMaster;
 import com.kcraft.engine.GameItem;
+import com.kcraft.engine.RenderState;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
 import com.kcraft.engine.math.Transformation;
-import com.kcraft.engine.render.model.OBJLoader;
 import com.kcraft.engine.shader.Shader;
-import com.kcraft.engine.texture.Texture;
-import com.kcraft.engine.texture.TextureLoader;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Matrix4f;
@@ -45,10 +44,6 @@ public class RenderMaster {
         shader.createUniform("useColour");
 
 
-
-
-
-
     }
 
 
@@ -84,6 +79,10 @@ public class RenderMaster {
 
         shader.setUniform("projectionMatrix", projectionMatrix);
         Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+
+        EngineMaster.INSTANCE.getGameLogic().render(this, camera, shader, RenderState.PRE);
+
+
         for (GameItem gameItem : gameItems) {
             Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
             shader.setUniform("modelViewMatrix", modelViewMatrix);

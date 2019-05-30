@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 @Getter
 public class GameItem {
 
+    @Setter
     private Mesh mesh;
     private Vector3f position;
     @Setter

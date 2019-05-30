@@ -5,6 +5,8 @@ import com.kcraft.engine.display.Display;
 import com.kcraft.engine.input.MouseInput;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import lombok.Getter;
+import lombok.Setter;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,8 +28,13 @@ public enum EngineMaster {
     private static final float CAMERA_POS_STEP = 0.05f;
     private static final float MOUSE_SENSITIVITY = 0.2f;
     private MouseInput mouseInput;
-
     private boolean wireFrameMode = false;
+
+
+    @Getter
+    @Setter
+    private IGameLogic gameLogic;
+
     public void start() {
         display = new Display(1080, 720, "KCraft");
 
@@ -40,15 +47,14 @@ public enum EngineMaster {
         renderMaster.setShader(baseShader);
 
         camera = new Camera();
-        camera.setPosition(5, 1.4f, -3);
         renderMaster.init();
         mouseInput = new MouseInput();
         mouseInput.init(display);
 
+        gameLogic.init(display);
+
 
 //        glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-
 
 
     }
@@ -63,19 +69,22 @@ public enum EngineMaster {
             }
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            if(wireFrameMode) {
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+            if (wireFrameMode) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             } else {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
             renderMaster.render(camera);
+            gameLogic.render(renderMaster, camera, baseShader,RenderState.POST);
             display.swapBuffers();
             handleCameraInput();
             camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
 
+            gameLogic.update();
         }
 
         baseShader.remove();
+        gameLogic.stop();
     }
 
     private void handleCameraInput() {
@@ -130,20 +139,14 @@ public enum EngineMaster {
     }
 
     public void onKeyPress(int key) {
-        if(key == GLFW_KEY_F3) {
-            wireFrameMode =!wireFrameMode;
+        if (key == GLFW_KEY_F3) {
+            wireFrameMode = !wireFrameMode;
         }
-
+        gameLogic.onKeyPress(key);
     }
 
     public void onKeyRelease(int key) {
-    }
-
-    private void render() {
-    }
-
-
-    private void updateState() {
+        gameLogic.onKeyRelease(key);
     }
 
 

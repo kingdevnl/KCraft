@@ -2,70 +2,54 @@ package com.kcraft.game;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kcraft.engine.EngineMaster;
 import com.kcraft.engine.GameItem;
+import com.kcraft.engine.IGameLogic;
+import com.kcraft.engine.RenderState;
+import com.kcraft.engine.camera.Camera;
+import com.kcraft.engine.display.Display;
 import com.kcraft.engine.render.Mesh;
+import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.render.model.OBJLoader;
+import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.Texture;
 import com.kcraft.engine.texture.TextureLoader;
+import com.kcraft.game.block.Block;
+import com.kcraft.game.block.BlockType;
 import com.kcraft.game.meshes.BlockMeshes;
-import com.kcraft.game.res.BlockLoader;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
-public class KCraft {
+public class KCraft extends IGameLogic {
+
     public static Gson gson = new GsonBuilder().create();
     public static Random random = new Random();
 
+
     public static void main(String[] args) {
+        engine.setGameLogic(new KCraft());
+        engine.start();
+    }
 
 
-        EngineMaster.INSTANCE.start();
+    private ArrayList<GameItem> blocks = new ArrayList<>();
 
+    @Override
+    public void init(Display display) {
 
-        BlockMeshes.createMeshes();
-        BlockLoader.loadBlocks();
-
-
-        int size = 40;
         try {
+            BlockMeshes.createMeshes();
 
-            Mesh grassMesh = OBJLoader.loadMesh("cube.obj");
-            Texture grassTexture = TextureLoader.loadTexture("grass.png");
-            grassMesh.setTexture(grassTexture);
-            Mesh cobbleMesh = OBJLoader.loadMesh("cube.obj");
-            Texture cobbleTexture = TextureLoader.loadTexture("cobble.png");
-            cobbleMesh.setTexture(cobbleTexture);
+            for (int x = 0; x < 20; x++) {
+                for (int z = 0; z < 20; z++) {
+                    Block block = new Block(BlockType.GRASS);
 
+                    block.setPosition(1+x, 0, -2+-z);
 
-            Random random = new Random();
-            for (int x = 0; x < size; x++) {
-
-                for (int z = 0; z < size; z++) {
-
-                    int min =1;
-                    int max = 2;
-
-                    int r = min+random.nextInt(max);
-
-                    System.out.println(r);
-
-                    GameItem gameItem;
-
-                    if(r == 2) {
-                        gameItem = new GameItem(grassMesh);
-                    } else {
-                        gameItem = new GameItem(cobbleMesh);
-                    }
-
-
-                    gameItem.setPosition(x, 0, -2 + -z);
-
-                    EngineMaster.INSTANCE.renderMaster.getGameItems().add(gameItem);
+                    addGameItem(block);
 
                 }
-
             }
 
 
@@ -73,7 +57,34 @@ public class KCraft {
             e.printStackTrace();
         }
 
+        engine.startLoop();
 
-        EngineMaster.INSTANCE.startLoop();
+    }
+
+    @Override
+    public void render(RenderMaster renderMaster, Camera camera, Shader shader, RenderState state) {
+
+    }
+
+
+    @Override
+    public void update() {
+
+    }
+
+
+    @Override
+    public void onKeyPress(int key) {
+
+    }
+
+    @Override
+    public void onKeyRelease(int key) {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 }
