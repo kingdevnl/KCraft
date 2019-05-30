@@ -2,6 +2,8 @@ package com.kcraft.engine.render;
 
 import com.kcraft.engine.texture.Texture;
 import lombok.Getter;
+import lombok.Setter;
+import org.joml.Vector3f;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
@@ -13,21 +15,23 @@ import static org.lwjgl.opengl.GL30.*;
 
 @Getter
 public class Mesh {
-    int vaoId,
-            posVboId,
-            colourVboId,
-            idxVboId,
-            vertexCount;
+    int vaoId, posVboId, colourVboId, idxVboId, vertexCount;
 
+    @Setter
     private Texture texture;
-    private final List<Integer> vboIdList;
+    @Setter
+    private Vector3f colour;
 
-    public Mesh(float[] positions, float[] textCoords, int[] indices, Texture texture) {
+    private final List<Integer> vboIdList;
+    private static final Vector3f DEFAULT_COLOUR = new Vector3f(1.0f, 1.0f, 1.0f);
+
+    public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
         FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
+        FloatBuffer vecNormalsBuffer = null;
         IntBuffer indicesBuffer = null;
         try {
-            this.texture = texture;
+            colour = DEFAULT_COLOUR;
             vertexCount = indices.length;
             vboIdList = new ArrayList();
 
@@ -52,6 +56,15 @@ public class Mesh {
             glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
             glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
 
+            // Vertex normals VBO
+            vboId = glGenBuffers();
+            vboIdList.add(vboId);
+            vecNormalsBuffer = MemoryUtil.memAllocFloat(normals.length);
+            vecNormalsBuffer.put(normals).flip();
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, vecNormalsBuffer, GL_STATIC_DRAW);
+            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
+
             // Index VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
@@ -69,11 +82,20 @@ public class Mesh {
             if (textCoordsBuffer != null) {
                 MemoryUtil.memFree(textCoordsBuffer);
             }
+            if (vecNormalsBuffer != null) {
+                MemoryUtil.memFree(vecNormalsBuffer);
+            }
             if (indicesBuffer != null) {
                 MemoryUtil.memFree(indicesBuffer);
             }
         }
     }
+
+    public boolean hasTexture() {
+        return  texture !=null;
+    }
+
+
 
     public void remove() {
         glDisableVertexAttribArray(0);

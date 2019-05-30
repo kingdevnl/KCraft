@@ -5,11 +5,9 @@ import com.kcraft.engine.display.Display;
 import com.kcraft.engine.input.MouseInput;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
 
 
@@ -24,7 +22,7 @@ public enum EngineMaster {
     public RenderMaster renderMaster = new RenderMaster();
 
     public Camera camera;
-    private  Vector3f cameraInc = new Vector3f(0, 0, 0);
+    private Vector3f cameraInc = new Vector3f(0, 0, 0);
     private static final float CAMERA_POS_STEP = 0.05f;
     private static final float MOUSE_SENSITIVITY = 0.2f;
     private MouseInput mouseInput;
@@ -41,6 +39,7 @@ public enum EngineMaster {
         renderMaster.setShader(baseShader);
 
         camera = new Camera();
+        camera.setPosition(5, 1.4f, -3);
         renderMaster.init();
         mouseInput = new MouseInput();
         mouseInput.init(display);
@@ -51,7 +50,7 @@ public enum EngineMaster {
 
             glfwPollEvents();
 
-            if(display.isKeyDown(GLFW_KEY_ESCAPE)) {
+            if (display.isKeyDown(GLFW_KEY_ESCAPE)) {
                 glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
             }
 
@@ -96,20 +95,19 @@ public enum EngineMaster {
 
         int speedInc = 9;
 
-        if(display.isKeyDown((GLFW_KEY_LEFT))) {
-            camera.moveRotation(0, -MOUSE_SENSITIVITY*speedInc, 0);
+        if (display.isKeyDown((GLFW_KEY_LEFT))) {
+            camera.moveRotation(0, -MOUSE_SENSITIVITY * speedInc, 0);
         }
-        if(display.isKeyDown((GLFW_KEY_RIGHT))) {
-            camera.moveRotation(0, MOUSE_SENSITIVITY*speedInc, 0);
-        }
-
-        if(display.isKeyDown((GLFW_KEY_UP))) {
-            camera.moveRotation(-MOUSE_SENSITIVITY*speedInc, 0, 0);
-        }
-        if(display.isKeyDown((GLFW_KEY_DOWN))) {
-            camera.moveRotation(MOUSE_SENSITIVITY*speedInc, 0, 0);
+        if (display.isKeyDown((GLFW_KEY_RIGHT))) {
+            camera.moveRotation(0, MOUSE_SENSITIVITY * speedInc, 0);
         }
 
+        if (display.isKeyDown((GLFW_KEY_UP))) {
+            camera.moveRotation(-MOUSE_SENSITIVITY * speedInc, 0, 0);
+        }
+        if (display.isKeyDown((GLFW_KEY_DOWN))) {
+            camera.moveRotation(MOUSE_SENSITIVITY * speedInc, 0, 0);
+        }
 
 
         mouseInput.input(display);
@@ -125,7 +123,8 @@ public enum EngineMaster {
 
     }
 
-    public void onKeyRelease(int key) {}
+    public void onKeyRelease(int key) {
+    }
 
     private void render() {
     }
