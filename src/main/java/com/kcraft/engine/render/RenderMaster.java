@@ -45,38 +45,9 @@ public class RenderMaster {
         shader.createUniform("useColour");
 
 
-        int size = 10;
-        try {
-
-            Mesh mesh = OBJLoader.loadMesh("cube.obj");
-            Texture texture = TextureLoader.loadTexture("grassblock.png");
-            mesh.setTexture(texture);
-            for (int x = 0; x < size; x++) {
-
-                for (int z = 0; z < size; z++) {
 
 
-                    GameItem gameItem = new GameItem(mesh);
-                    gameItem.setScale(0.5f);
-                    gameItem.setPosition(x, 0, -2 + -z);
 
-                    gameItems.add(gameItem);
-                }
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-//
-//        testMesh = new Mesh(positions, textCoords, indices, TextureLoader.loadTexture("grassblock.png"));
-//        GameItem testItem = new GameItem(testMesh);
-//        float rotation = testItem.getRotation().x + 1.5f;
-//        testItem.setRotation(rotation, rotation, rotation);
-//        testItem.setPosition(0, 0, -1.5f);
-//        gameItems.add(testItem);
 
     }
 

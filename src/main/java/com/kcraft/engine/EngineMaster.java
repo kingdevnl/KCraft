@@ -27,6 +27,7 @@ public enum EngineMaster {
     private static final float MOUSE_SENSITIVITY = 0.2f;
     private MouseInput mouseInput;
 
+    private boolean wireFrameMode = false;
     public void start() {
         display = new Display(1080, 720, "KCraft");
 
@@ -44,8 +45,15 @@ public enum EngineMaster {
         mouseInput = new MouseInput();
         mouseInput.init(display);
 
+
 //        glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
+
+
+
+    }
+
+    public void startLoop() {
         while (!display.isCloseRequested()) {
 
             glfwPollEvents();
@@ -55,6 +63,11 @@ public enum EngineMaster {
             }
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            if(wireFrameMode) {
+                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+            } else {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
             renderMaster.render(camera);
             display.swapBuffers();
             handleCameraInput();
@@ -63,8 +76,6 @@ public enum EngineMaster {
         }
 
         baseShader.remove();
-
-
     }
 
     private void handleCameraInput() {
@@ -119,7 +130,9 @@ public enum EngineMaster {
     }
 
     public void onKeyPress(int key) {
-
+        if(key == GLFW_KEY_F3) {
+            wireFrameMode =!wireFrameMode;
+        }
 
     }
 

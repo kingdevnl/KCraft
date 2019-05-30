@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Grass",
+    "texture": "grass.png"
+  },
+  {
+    "name": "Cobble",
+    "texture": "grassblock.png"
+  }
+]
