@@ -13,6 +13,7 @@ import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 import com.kcraft.game.meshes.BlockMeshes;
 import com.kcraft.game.world.World;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -54,6 +55,9 @@ public class KCraft extends IGameLogic {
     @Override
     public void render(RenderMaster renderMaster, Camera camera, Shader shader, RenderState state) {
 
+        if(state == RenderState.PRE) {
+            GL11.glClearColor(100f / 255f, 149f / 255f, 237f / 255f, 1f);
+        }
     }
 
 
