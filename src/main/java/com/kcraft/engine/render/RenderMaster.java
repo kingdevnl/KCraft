@@ -105,10 +105,15 @@ public class RenderMaster {
         }
 
         for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
-            renderer.render(this, display, camera, shader);
+            renderer.render(this, display, camera, shader, RenderState.PRE);
         }
 
         shader.unbind();
+
+        for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
+            renderer.render(this, display, camera, shader, RenderState.POST);
+        }
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.kcraft.game.world;
 
+import com.kcraft.engine.RenderState;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
 import com.kcraft.engine.render.IRenderer;
@@ -36,9 +37,13 @@ public class World implements IRenderer {
     }
 
     @Override
-    public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader) {
-        for (Block block : blocks) {
-            renderMaster.renderGameItem(block);
+    public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader, RenderState state) {
+        if(state == RenderState.PRE) {
+            for (Block block : blocks) {
+                renderMaster.renderGameItem(block);
+            }
+
         }
+
     }
 }

@@ -12,6 +12,7 @@ import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.render.model.OBJLoader;
 import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.TextureLoader;
+import com.kcraft.game.hud.HUD;
 import com.kcraft.game.meshes.BlockMeshes;
 import com.kcraft.game.world.World;
 import org.lwjgl.opengl.GL11;
@@ -25,6 +26,9 @@ public class KCraft extends IGameLogic {
 
     public static Gson gson = new GsonBuilder().create();
     public static Random random = new Random();
+
+
+    private HUD hud = new HUD();
 
 
     public static void main(String[] args) {
@@ -44,6 +48,8 @@ public class KCraft extends IGameLogic {
             BlockMeshes.createMeshes();
 
             addRenderer(world);
+            addRenderer(hud);
+
             world.generateFlatWorld();
 
 
@@ -54,6 +60,10 @@ public class KCraft extends IGameLogic {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        hud.init();
+
+
         engine.startLoop();
 
     }
