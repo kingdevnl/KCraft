@@ -1,12 +1,16 @@
 package com.kcraft.game.world;
 
-import com.kcraft.game.KCraft;
+import com.kcraft.engine.camera.Camera;
+import com.kcraft.engine.display.Display;
+import com.kcraft.engine.render.IRenderer;
+import com.kcraft.engine.render.RenderMaster;
+import com.kcraft.engine.shader.Shader;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 
 import java.util.ArrayList;
 
-public class World {
+public class World implements IRenderer {
 
 
     private String name;
@@ -19,14 +23,6 @@ public class World {
         this.size = size;
     }
 
-    public void updateRenderItems() {
-        for (Block block : blocks) {
-
-            if (!KCraft.engine.getGameLogic().getRenderMaster().getGameItems().contains(block)) {
-                KCraft.engine.getGameLogic().getRenderMaster().getGameItems().add(block);
-            }
-        }
-    }
 
     public void generateFlatWorld() {
         for (int x = 0; x < size; x++) {
@@ -36,6 +32,13 @@ public class World {
 
                 blocks.add(block);
             }
+        }
+    }
+
+    @Override
+    public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader) {
+        for (Block block : blocks) {
+            renderMaster.renderGameItem(block);
         }
     }
 }

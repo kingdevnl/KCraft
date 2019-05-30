@@ -31,6 +31,8 @@ public class RenderMaster {
     private Matrix4f projectionMatrix;
 
 
+    private Camera camera;
+
     @Getter
     private Transformation transformation = new Transformation();
 
@@ -73,30 +75,39 @@ public class RenderMaster {
 
     private ArrayList<GameItem> gameItems = new ArrayList<>();
 
+    public void renderGameItem(GameItem gameItem) {
+        Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+
+        Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
+        shader.setUniform("modelViewMatrix", modelViewMatrix);
+        shader.setUniform("colour", gameItem.getMesh().getColour());
+        shader.setUniform("useColour", gameItem.getMesh().hasTexture() ? 0 : 1);
+
+        glEnable(GL_DEPTH_TEST);
+        renderMesh(gameItem.getMesh());
+        glDisable(GL_DEPTH_TEST);
+
+    }
+
     public void render(Camera camera) {
 
-       EngineMaster.INSTANCE.getGameLogic().render(this, camera, shader, RenderState.PRE);
-
+        this.camera = camera;
+        EngineMaster.INSTANCE.getGameLogic().render(this, camera, shader, RenderState.PRE);
 
         shader.bind();
         Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, display.getWidth(), display.getHeight(), Z_NEAR, Z_FAR);
-
         shader.setUniform("projectionMatrix", projectionMatrix);
-        Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-
-
 
 
         for (GameItem gameItem : gameItems) {
-            Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
-            shader.setUniform("modelViewMatrix", modelViewMatrix);
-            shader.setUniform("colour", gameItem.getMesh().getColour());
-            shader.setUniform("useColour", gameItem.getMesh().hasTexture() ? 0 : 1);
 
-            glEnable(GL_DEPTH_TEST);
-            renderMesh(gameItem.getMesh());
-            glDisable(GL_DEPTH_TEST);
+            renderGameItem(gameItem);
         }
+
+        for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
+            renderer.render(this, display, camera, shader);
+        }
+
         shader.unbind();
     }
 

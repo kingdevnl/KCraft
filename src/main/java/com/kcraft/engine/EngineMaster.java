@@ -3,11 +3,14 @@ package com.kcraft.engine;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
 import com.kcraft.engine.input.MouseInput;
+import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
+
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -29,6 +32,10 @@ public enum EngineMaster {
     private static final float MOUSE_SENSITIVITY = 0.2f;
     private MouseInput mouseInput;
     private boolean wireFrameMode = false;
+
+
+    @Getter
+    private ArrayList<IRenderer> renderers = new ArrayList<>();
 
 
     @Getter

@@ -19,6 +19,7 @@ public class BlockMeshes {
             grassMesh = OBJLoader.loadMesh("cube.obj");
             grassMesh.setTexture(TextureLoader.loadTexture("grass.png"));
 
+
             cobbleMesh = OBJLoader.loadMesh("cube.obj");
             cobbleMesh.setTexture(TextureLoader.loadTexture("cobble.png"));
 

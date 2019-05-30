@@ -2,6 +2,7 @@ package com.kcraft.engine;
 
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
+import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
 
@@ -16,9 +17,9 @@ public abstract class IGameLogic {
 
     public abstract void update();
 
-    public abstract void onKeyPress(int key);
+    public void onKeyPress(int key){}
 
-    public abstract void onKeyRelease(int key);
+    public void onKeyRelease(int key){}
 
     public abstract void stop();
 
@@ -34,7 +35,9 @@ public abstract class IGameLogic {
     public void addGameItem(GameItem gameItem) {
         getRenderMaster().getGameItems().add(gameItem);
     }
-
+    public void addRenderer(IRenderer renderer) {
+        engine.getRenderers().add(renderer);
+    }
 
 
 

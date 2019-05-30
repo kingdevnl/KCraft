@@ -1,7 +1,6 @@
 package com.kcraft.game.block;
 
 import com.kcraft.engine.GameItem;
-import com.kcraft.engine.render.Mesh;
 import com.kcraft.game.meshes.BlockMeshes;
 import lombok.Getter;
 import lombok.Setter;
