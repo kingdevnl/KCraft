@@ -57,6 +57,7 @@ public class KCraft extends IGameLogic {
             addRenderer(hud);
 
             world.generateFlatWorld();
+            engine.camera.setPosition(7, .9f, -1);
 
 
 
