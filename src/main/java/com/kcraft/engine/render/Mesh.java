@@ -92,9 +92,8 @@ public class Mesh {
     }
 
     public boolean hasTexture() {
-        return  texture !=null;
+        return texture != null;
     }
-
 
 
     public void remove() {
@@ -106,8 +105,10 @@ public class Mesh {
             glDeleteBuffers(vboId);
         }
 
+
         // Delete the texture
-        texture.remove();
+        if (hasTexture())
+            texture.remove();
 
         // Delete the VAO
         glBindVertexArray(0);

@@ -15,8 +15,8 @@ public class BlockMeshes {
 
     public static void createMeshes() {
         try {
-            simpleBlockMesh = OBJLoader.loadMesh("cube.obj");
-            grassMesh = OBJLoader.loadMesh("cube.obj");
+            simpleBlockMesh = OBJLoader.loadMesh("block.obj");
+            grassMesh = OBJLoader.loadMesh("block.obj");
             grassMesh.setTexture(TextureLoader.loadTexture("grass.png"));
 
 

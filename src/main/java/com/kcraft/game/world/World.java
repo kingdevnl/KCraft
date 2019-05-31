@@ -35,10 +35,13 @@ public class World implements IRenderer {
     public void generateFlatWorld() {
         for (int x = 0; x < size; x++) {
             for (int z = 0; z < size; z++) {
-                Block block = new Block(BlockType.GRASS);
-                block.setPosition(1 + x, 0, -2 + -z);
+                Block grass = new Block(BlockType.GRASS);
+                grass.setPosition(1 + x, 0, -2 + -z);
+                addBlock(grass);
 
-                addBlock(block);
+                Block cobble = new Block(BlockType.COBBLE);
+                cobble.setPosition(1+x, -1, -2+-z);
+                addBlock(cobble);
             }
         }
     }
@@ -58,6 +61,7 @@ public class World implements IRenderer {
 
         if(first.isPresent()) {
             Block found = first.get();
+
             blocks.remove(found);
             if(set != null) {
                 addBlock(set);
@@ -73,5 +77,9 @@ public class World implements IRenderer {
         block.setPosition(position);
 
         this.blocks.add(block);
+    }
+
+    public void stop() {
+
     }
 }

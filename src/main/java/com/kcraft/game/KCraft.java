@@ -114,6 +114,10 @@ public class KCraft extends IGameLogic {
     }
 
     public void stop() {
-
+        world.stop();
+        world.getBlocks().clear();
+        BlockMeshes.cobbleMesh.remove();
+        BlockMeshes.grassMesh.remove();
+        BlockMeshes.simpleBlockMesh.remove();
     }
 }

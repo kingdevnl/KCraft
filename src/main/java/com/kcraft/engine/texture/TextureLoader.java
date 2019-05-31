@@ -24,6 +24,7 @@ public class TextureLoader {
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glLin);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, byteBuffer);
             glGenerateMipmap(GL_TEXTURE_2D);
+            System.out.println("Loaded texture "+name + " id: "+id);
             return new Texture(id);
         } catch (IOException e) {
             e.printStackTrace();

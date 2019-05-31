@@ -11,6 +11,7 @@ public class Texture {
 
     public void remove() {
         GL11.glDeleteTextures(textureID);
+        System.out.println("Deleted texture " + textureID);
     }
 
 }

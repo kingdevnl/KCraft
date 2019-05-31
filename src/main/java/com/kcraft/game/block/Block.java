@@ -15,6 +15,8 @@ public class Block extends GameItem {
     public Block(BlockType type) {
         super(BlockMeshes.simpleBlockMesh);
 
+        setScale(.5f);
+
         if(type == BlockType.GRASS) {
             setMesh(BlockMeshes.grassMesh);
         }
