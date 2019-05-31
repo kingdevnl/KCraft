@@ -8,22 +8,16 @@ import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.Texture;
-import com.kcraft.engine.utils.ColourUtils;
 import com.kcraft.engine.utils.IOUtils;
 import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
-import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.kcraft.engine.utils.ColourUtils.rgba;
-import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 
@@ -36,7 +30,6 @@ public class HUD implements IRenderer {
     private NVGColor colour;
 
 
-
     private static final String FONT_NAME = "Roboto";
 
     ByteBuffer fontBuffer;
@@ -47,26 +40,26 @@ public class HUD implements IRenderer {
     private DoubleBuffer posx;
 
     private DoubleBuffer posy;
-    
+
     public void init() {
 //        texture = TextureLoader.loadTexture("hud.png");
 
 
         vg = nvgCreate(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
-        if(vg == 0) {
+        if (vg == 0) {
             System.err.println("Error initializing NanoVG!");
         }
         colour = NVGColor.create();
 
         try {
-            fontBuffer = IOUtils.ioResourceToByteBuffer("/fonts/Roboto.ttf",  150 * 1024);
+            fontBuffer = IOUtils.ioResourceToByteBuffer("/fonts/Roboto.ttf", 150 * 1024);
         } catch (IOException e) {
             e.printStackTrace();
 
             System.exit(1);
         }
         font = nvgCreateFontMem(vg, FONT_NAME, fontBuffer, 0);
-        if(font == -1) {
+        if (font == -1) {
             System.err.println("Error creating font!");
             System.exit(1);
         }
@@ -95,13 +88,13 @@ public class HUD implements IRenderer {
 
             Vector3f position = EngineMaster.INSTANCE.camera.getPosition();
 
-            renderText(20,10, String.format("x: %d, y: %d, z: %d",(int)position.x, (int)position.y, (int)position.z ), 24);
+            renderText(20, 10, String.format("x: %d, y: %d, z: %d", (int) position.x, (int) position.y, (int) position.z), 24);
 
-            renderText(20, display.getHeight()-40, "Press insert to place a block", 24);
-            renderText(20, display.getHeight()-24, "Press delete to remove a block", 24);
+            renderText(20, display.getHeight() - 40, "Press insert to place a block", 24);
+            renderText(20, display.getHeight() - 24, "Press delete to remove a block", 24);
 
 
-            renderText(display.getWidth()-45, 10, "V0.1", 24);
+            renderText(display.getWidth() - 45, 10, "V0.1", 24);
 
             nvgEndFrame(vg);
 

@@ -39,7 +39,7 @@ dependencies {
     shade "org.lwjgl:lwjgl-nanovg:${lwjglVersion}"
     shade "org.lwjgl:lwjgl-stb:${lwjglVersion}"
     shade "org.lwjgl:lwjgl-assimp:${lwjglVersion}"
-    shade "org.lwjgl:lwjgl-vulkan:${lwjglVersion}"
+    
     shade "org.lwjgl:lwjgl-egl:$lwjglVersion"
     shade "org.lwjgl:lwjgl-opengles:$lwjglVersion"
 
@@ -74,7 +74,7 @@ dependencies {
     shade "org.lwjgl:lwjgl-assimp:${lwjglVersion}:natives-macos"
     shade "org.lwjgl:lwjgl-opengles:${lwjglVersion}:natives-macos"
 
-    shade "it.unimi.dsi:fastutil:8.2.2"
+
     shade "org.joml:joml:${jomlVersion}"
 
 

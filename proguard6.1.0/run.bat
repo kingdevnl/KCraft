@@ -1,1 +1,0 @@
-java -jar proguard.jar @proguard.conf
