@@ -27,6 +27,9 @@ public class GameItem {
         this.position.y = y;
         this.position.z = z;
     }
+    public void setPosition(Vector3f pos) {
+        this.position = pos;
+    }
 
     public void setRotation(float x, float y, float z) {
         this.rotation.x = x;

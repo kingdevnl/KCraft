@@ -80,7 +80,8 @@ public class HUD implements IRenderer {
         nvgFontSize(vg, fontSize);
         nvgFontFace(vg, FONT_NAME);
         nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-        nvgFillColor(vg, rgba(0xe6, 0xea, 0xed, 255, colour));
+        nvgFillColor(vg, rgba(2, 2, 2, 255, colour));
+
         nvgText(vg, x, y, text);
 
     }
