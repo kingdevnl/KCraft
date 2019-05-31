@@ -2,16 +2,12 @@ package com.kcraft.game;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kcraft.engine.GameItem;
 import com.kcraft.engine.IGameLogic;
 import com.kcraft.engine.RenderState;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
-import com.kcraft.engine.render.Mesh;
 import com.kcraft.engine.render.RenderMaster;
-import com.kcraft.engine.render.model.OBJLoader;
 import com.kcraft.engine.shader.Shader;
-import com.kcraft.engine.texture.TextureLoader;
 import com.kcraft.engine.utils.VectorUtils;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
@@ -51,7 +47,7 @@ public class KCraft extends IGameLogic {
     @Override
     public void init(Display display) {
         kCraft = this;
-        world = new World("Default", 10);
+        world = new World("Default", 30);
         try {
             BlockMeshes.createMeshes();
 
@@ -75,6 +71,21 @@ public class KCraft extends IGameLogic {
 
         engine.startLoop();
 
+    }
+
+    @Override
+    public boolean canCameraMove(Camera camera, Vector3f oldPos, Vector3f position) {
+
+        if(position.y < oldPos.y) {
+            //Going down
+
+            Vector3i blockPos = VectorUtils.convertToInt(position);
+
+
+        }
+
+
+        return true;
     }
 
     @Override

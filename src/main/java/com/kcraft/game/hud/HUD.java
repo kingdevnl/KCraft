@@ -8,6 +8,7 @@ import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.Texture;
+import com.kcraft.engine.utils.ColourUtils;
 import com.kcraft.engine.utils.IOUtils;
 import com.kcraft.game.KCraft;
 import org.joml.Vector3f;
@@ -21,6 +22,7 @@ import java.nio.DoubleBuffer;
 import static com.kcraft.engine.utils.ColourUtils.rgba;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class HUD implements IRenderer {
 
@@ -72,21 +74,30 @@ public class HUD implements IRenderer {
     }
 
 
-    public void renderText(int x, int y, String text, float fontSize) {
+    public void renderTextAlfa(int x, int y, String text, float fontSize, float alfa) {
         // Render hour text
         nvgFontSize(vg, fontSize);
         nvgFontFace(vg, FONT_NAME);
         nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-        nvgFillColor(vg, rgba(2, 2, 2, 255, colour));
+        nvgFillColor(vg, rgba(2, 2, 2, alfa, colour));
 
         nvgText(vg, x, y, text);
 
+    }
+
+
+    public void renderText(int x, int y, String text, float fontSize) {
+
+        renderTextAlfa(x, y, text, fontSize, 255);
     }
 
     @Override
     public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader, RenderState state) {
 
         if (state == RenderState.POST) {
+
+
+            glPushMatrix();
 
 
             nvgBeginFrame(vg, display.getWidth(), display.getHeight(), 1);
@@ -105,7 +116,13 @@ public class HUD implements IRenderer {
 
             nvgEndFrame(vg);
 
+
+
+            renderTextAlfa(display.getWidth()/2, display.getHeight()/2-80, "+", 80, 200);
+
+
             display.restoreState();
+            glPopMatrix();
 
         }
 

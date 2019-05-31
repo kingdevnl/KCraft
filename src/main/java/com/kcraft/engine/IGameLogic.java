@@ -5,6 +5,7 @@ import com.kcraft.engine.display.Display;
 import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import org.joml.Vector3f;
 
 public abstract class IGameLogic {
 
@@ -22,6 +23,13 @@ public abstract class IGameLogic {
     public void onKeyRelease(int key){}
 
     public abstract void stop();
+
+    public void onWindowResize(long window, int width, int height){}
+
+    public boolean canCameraMove(Camera camera, Vector3f oldPos, Vector3f position) {
+
+        return true;
+    }
 
 
     public RenderMaster getRenderMaster() {

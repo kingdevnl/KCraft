@@ -85,6 +85,7 @@ public enum EngineMaster {
             gameLogic.render(renderMaster, camera, baseShader,RenderState.POST);
             display.swapBuffers();
             handleCameraInput();
+
             camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
 
             gameLogic.update();
@@ -95,6 +96,7 @@ public enum EngineMaster {
     }
 
     private void handleCameraInput() {
+
         cameraInc.set(0, 0, 0);
         if (display.isKeyDown(GLFW_KEY_W)) {
             cameraInc.z = -1;

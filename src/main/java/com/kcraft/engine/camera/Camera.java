@@ -1,5 +1,6 @@
 package com.kcraft.engine.camera;
 
+import com.kcraft.engine.EngineMaster;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
@@ -38,6 +39,7 @@ public class Camera {
         rotation.z += offsetZ;
     }
     public void movePosition(float offsetX, float offsetY, float offsetZ) {
+        Vector3f oldPos = new Vector3f(position.x, position.y, position.z);
         if ( offsetZ != 0 ) {
             position.x += (float)Math.sin(Math.toRadians(rotation.y)) * -1.0f * offsetZ;
             position.z += (float)Math.cos(Math.toRadians(rotation.y)) * offsetZ;
@@ -47,6 +49,14 @@ public class Camera {
             position.z += (float)Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
         }
         position.y += offsetY;
+
+        if(!EngineMaster.INSTANCE.getGameLogic().canCameraMove(this, oldPos, position)) {
+            this.position.x = oldPos.x;
+            this.position.y = oldPos.y;
+            this.position.z = oldPos.z;
+        }
+
+
     }
 
 }

@@ -68,6 +68,14 @@ public class Display {
 
         });
 
+        glfwSetWindowSizeCallback(window, (window1, w, h) -> {
+
+            EngineMaster.INSTANCE.getGameLogic().onWindowResize(window, w, h);
+            this.width = w;
+            this.height = h;
+            glViewport(0,0, w, h);
+
+        });
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);
