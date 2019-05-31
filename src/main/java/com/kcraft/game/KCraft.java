@@ -12,12 +12,14 @@ import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.render.model.OBJLoader;
 import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.TextureLoader;
+import com.kcraft.engine.utils.VectorUtils;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 import com.kcraft.game.hud.HUD;
 import com.kcraft.game.meshes.BlockMeshes;
 import com.kcraft.game.world.World;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -104,9 +106,13 @@ public class KCraft extends IGameLogic {
             world.addBlock(block);
 
         }
+        if(key == GLFW.GLFW_KEY_DELETE) {
+            Vector3i pos = VectorUtils.convertToInt(VectorUtils.normalize3f(engine.camera.getPosition()));
+
+            world.setBlock(pos.x, pos.y, pos.z, null);
+        }
     }
 
-    @Override
     public void stop() {
 
     }

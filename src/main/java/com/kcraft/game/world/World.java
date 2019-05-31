@@ -6,12 +6,14 @@ import com.kcraft.engine.display.Display;
 import com.kcraft.engine.render.IRenderer;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import com.kcraft.engine.utils.VectorUtils;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 import lombok.Getter;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class World implements IRenderer {
 
@@ -36,28 +38,37 @@ public class World implements IRenderer {
                 Block block = new Block(BlockType.GRASS);
                 block.setPosition(1 + x, 0, -2 + -z);
 
-               addBlock(block);
+                addBlock(block);
             }
         }
     }
 
     @Override
     public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader, RenderState state) {
-        if(state == RenderState.PRE) {
+        if (state == RenderState.PRE) {
             for (Block block : blocks) {
                 renderMaster.renderGameItem(block);
             }
 
         }
+    }
+
+    public void setBlock(int x, int y, int z, Block set) {
+        Optional<Block> first = blocks.stream().filter(block -> block.getPosition().x == x && block.getPosition().y == y && block.getPosition().z == z).findFirst();
+
+        if(first.isPresent()) {
+            Block found = first.get();
+            blocks.remove(found);
+            if(set != null) {
+                addBlock(set);
+            }
+        }
 
     }
 
     public void addBlock(Block block) {
-        Vector3f position = block.getPosition();
+        Vector3f position = VectorUtils.normalize3f(block.getPosition());
 
-        position.x =Math.round(position.x);
-        position.y =Math.round(position.y);
-        position.z =Math.round(position.z);
 
         block.setPosition(position);
 

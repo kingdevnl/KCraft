@@ -95,7 +95,13 @@ public class HUD implements IRenderer {
 
             Vector3f position = EngineMaster.INSTANCE.camera.getPosition();
 
-            renderText(20,20, String.format("x: %d, y: %d, z: %d",(int)position.x, (int)position.y, (int)position.z ), 24);
+            renderText(20,10, String.format("x: %d, y: %d, z: %d",(int)position.x, (int)position.y, (int)position.z ), 24);
+
+            renderText(20, display.getHeight()-40, "Press insert to place a block", 24);
+            renderText(20, display.getHeight()-24, "Press delete to remove a block", 24);
+
+
+            renderText(display.getWidth()-45, 10, "V0.1", 24);
 
             nvgEndFrame(vg);
 
