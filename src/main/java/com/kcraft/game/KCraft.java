@@ -36,6 +36,8 @@ public class KCraft extends IGameLogic {
 
     private HUD hud = new HUD();
 
+    public static KCraft kCraft;
+
 
     public static void main(String[] args) {
         engine.setGameLogic(new KCraft());
@@ -48,8 +50,8 @@ public class KCraft extends IGameLogic {
 
     @Override
     public void init(Display display) {
-
-        world = new World("Default", 20);
+        kCraft = this;
+        world = new World("Default", 10);
         try {
             BlockMeshes.createMeshes();
 
@@ -120,5 +122,9 @@ public class KCraft extends IGameLogic {
         BlockMeshes.cobbleMesh.remove();
         BlockMeshes.grassMesh.remove();
         BlockMeshes.simpleBlockMesh.remove();
+    }
+
+    public World getWorld() {
+    return this.world;
     }
 }

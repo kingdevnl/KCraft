@@ -9,6 +9,7 @@ import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
 import com.kcraft.engine.texture.Texture;
 import com.kcraft.engine.utils.IOUtils;
+import com.kcraft.game.KCraft;
 import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.system.MemoryUtil;
@@ -41,6 +42,7 @@ public class HUD implements IRenderer {
 
     private DoubleBuffer posy;
 
+
     public void init() {
 //        texture = TextureLoader.loadTexture("hud.png");
 
@@ -65,6 +67,8 @@ public class HUD implements IRenderer {
         }
         posx = MemoryUtil.memAllocDouble(1);
         posy = MemoryUtil.memAllocDouble(1);
+
+
     }
 
 
@@ -84,11 +88,14 @@ public class HUD implements IRenderer {
 
         if (state == RenderState.POST) {
 
+
             nvgBeginFrame(vg, display.getWidth(), display.getHeight(), 1);
 
             Vector3f position = EngineMaster.INSTANCE.camera.getPosition();
 
             renderText(20, 10, String.format("x: %d, y: %d, z: %d", (int) position.x, (int) position.y, (int) position.z), 24);
+            renderText(20, 35, String.format("blocks: %d", KCraft.kCraft.getWorld().getBlocks().size()), 24);
+
 
             renderText(20, display.getHeight() - 40, "Press insert to place a block", 24);
             renderText(20, display.getHeight() - 24, "Press delete to remove a block", 24);

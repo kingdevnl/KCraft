@@ -11,6 +11,7 @@ import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
 import lombok.Getter;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -56,6 +57,17 @@ public class World implements IRenderer {
         }
     }
 
+    public Block getBlockAtPosition(int x, int y, int z) {
+        Optional<Block> first = blocks.stream().filter(block -> block.getPosition().x == x && block.getPosition().y == y && block.getPosition().z == z).findFirst();
+
+        if(first.isPresent()) {
+            return first.get();
+        }
+
+        return null;
+
+    }
+
     public void setBlock(int x, int y, int z, Block set) {
         Optional<Block> first = blocks.stream().filter(block -> block.getPosition().x == x && block.getPosition().y == y && block.getPosition().z == z).findFirst();
 
@@ -71,12 +83,16 @@ public class World implements IRenderer {
     }
 
     public void addBlock(Block block) {
+
         Vector3f position = VectorUtils.normalize3f(block.getPosition());
+        Vector3i posI = VectorUtils.convertToInt(position);
 
+        if(getBlockAtPosition(posI.x ,posI.y, posI.z) == null) {
+            block.setPosition(position);
 
-        block.setPosition(position);
+            this.blocks.add(block);
+        }
 
-        this.blocks.add(block);
     }
 
     public void stop() {
