@@ -103,14 +103,14 @@ public class RenderMaster {
             renderGameItem(gameItem);
         }
 
-        for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
-            renderer.render(this, display, camera, shader, RenderState.PRE);
+        for (IRenderable renderer : EngineMaster.INSTANCE.getRenderers()) {
+            renderer.render(this, display, camera, shader, RenderState.PRE, EngineMaster.INSTANCE.getGameState());
         }
 
         shader.unbind();
 
-        for (IRenderer renderer : EngineMaster.INSTANCE.getRenderers()) {
-            renderer.render(this, display, camera, shader, RenderState.POST);
+        for (IRenderable renderer : EngineMaster.INSTANCE.getRenderers()) {
+            renderer.render(this, display, camera, shader, RenderState.POST, EngineMaster.INSTANCE.getGameState());
         }
 
 

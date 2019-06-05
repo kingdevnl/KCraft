@@ -3,11 +3,15 @@ package com.kcraft.engine;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
 import com.kcraft.engine.input.MouseInput;
-import com.kcraft.engine.render.IRenderer;
+import com.kcraft.engine.render.IRenderable;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import com.kcraft.engine.state.GameState;
+import com.kcraft.engine.utils.ITickable;
+import com.kcraft.game.KCraft;
 import lombok.Getter;
 import lombok.Setter;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -31,11 +35,19 @@ public enum EngineMaster {
     private static final float CAMERA_POS_STEP = 0.05f;
     private static final float MOUSE_SENSITIVITY = 0.2f;
     private MouseInput mouseInput;
-    private boolean wireFrameMode = false;
+    public boolean wireFrameMode = false;
 
 
     @Getter
-    private ArrayList<IRenderer> renderers = new ArrayList<>();
+    private ArrayList<IRenderable> renderers = new ArrayList<>();
+
+    @Getter
+    public ArrayList<ITickable> tickables = new ArrayList<>();
+
+
+    @Getter
+    @Setter
+    private GameState gameState = GameState.SPLASH;
 
 
     @Getter
@@ -61,8 +73,6 @@ public enum EngineMaster {
         gameLogic.init(display);
 
 
-//        glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
 
     }
 
@@ -72,7 +82,7 @@ public enum EngineMaster {
             glfwPollEvents();
 
             if (display.isKeyDown(GLFW_KEY_ESCAPE)) {
-                glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+                glfwSetInputMode(display.getWindowID(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             }
 
             display.clear();
@@ -82,11 +92,17 @@ public enum EngineMaster {
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
             renderMaster.render(camera);
-            gameLogic.render(renderMaster, camera, baseShader,RenderState.POST);
+            gameLogic.render(renderMaster, camera, baseShader, RenderState.POST);
             display.swapBuffers();
             handleCameraInput();
 
             camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+
+            tickables.forEach(t-> t.tick(this, renderMaster));
+            renderMaster.getGameItems().stream().filter(i -> i.hasTickable()).forEach(gameItem -> {
+                gameItem.getTickable().tick(this, renderMaster);
+            });
+
 
             gameLogic.update();
         }
@@ -96,6 +112,10 @@ public enum EngineMaster {
     }
 
     private void handleCameraInput() {
+
+        if(KCraft.engine.getGameState() != GameState.INGAME) {
+            return;
+        }
 
         cameraInc.set(0, 0, 0);
         if (display.isKeyDown(GLFW_KEY_W)) {
@@ -140,11 +160,11 @@ public enum EngineMaster {
 
 
         mouseInput.input(display);
-//        if (!mouseInput.isRightButtonPressed()) {
-//            Vector2f rotVec = mouseInput.getDisplVec();
-//
+        if (!mouseInput.isRightButtonPressed()) {
+            Vector2f rotVec = mouseInput.getDisplVec();
+
 //            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-//        }
+        }
     }
 
     public void onKeyPress(int key) {

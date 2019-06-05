@@ -4,13 +4,15 @@ import com.kcraft.engine.EngineMaster;
 import com.kcraft.engine.RenderState;
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
-import com.kcraft.engine.render.IRenderer;
+import com.kcraft.engine.render.IRenderable;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import com.kcraft.engine.state.GameState;
 import com.kcraft.engine.texture.Texture;
-import com.kcraft.engine.utils.ColourUtils;
 import com.kcraft.engine.utils.IOUtils;
 import com.kcraft.game.KCraft;
+import org.ice1000.jimgui.JImGui;
+import org.ice1000.jimgui.util.JniLoaderEx;
 import org.joml.Vector3f;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.system.MemoryUtil;
@@ -24,7 +26,7 @@ import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class HUD implements IRenderer {
+public class HUD implements IRenderable {
 
     private Texture texture;
 
@@ -43,6 +45,9 @@ public class HUD implements IRenderer {
     private DoubleBuffer posx;
 
     private DoubleBuffer posy;
+
+
+    private JImGui imGui;
 
 
     public void init() {
@@ -70,6 +75,14 @@ public class HUD implements IRenderer {
         posx = MemoryUtil.memAllocDouble(1);
         posy = MemoryUtil.memAllocDouble(1);
 
+        System.out.println("ptr: " + KCraft.engine.display.getWindowID());
+
+
+        JniLoaderEx.loadGlfw();
+
+
+        imGui = JImGui.fromExistingPointer(KCraft.engine.display.getWindowID());
+
 
     }
 
@@ -92,9 +105,19 @@ public class HUD implements IRenderer {
     }
 
     @Override
-    public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader, RenderState state) {
+    public void render(RenderMaster renderMaster, Display display, Camera camera, Shader shader, RenderState renderState, GameState gameState) {
 
-        if (state == RenderState.POST) {
+        if(gameState != GameState.INGAME) {
+            return;
+        }
+
+        if (renderState == RenderState.POST) {
+
+            boolean prevWireModState = KCraft.engine.wireFrameMode;
+
+            if (prevWireModState) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
 
 
             glPushMatrix();
@@ -104,8 +127,14 @@ public class HUD implements IRenderer {
 
             Vector3f position = EngineMaster.INSTANCE.camera.getPosition();
 
-            renderText(20, 10, String.format("x: %d, y: %d, z: %d", (int) position.x, (int) position.y, (int) position.z), 24);
-            renderText(20, 35, String.format("blocks: %d", KCraft.kCraft.getWorld().getBlocks().size()), 24);
+            renderText(20, 10, String.format("Pos: x: %d, y: %d, z: %d", (int) position.x, (int) position.y, (int) position.z), 24);
+
+            Vector3f rotation = EngineMaster.INSTANCE.camera.getRotation();
+
+
+            renderText(20, 35, String.format("Rot: x: %f, y: %f", rotation.x, rotation.y), 24);
+
+            renderText(20, 60, String.format("Blocks: %d", KCraft.kCraft.getWorld().getBlocks().size()), 24);
 
 
             renderText(20, display.getHeight() - 40, "Press insert to place a block", 24);
@@ -117,13 +146,17 @@ public class HUD implements IRenderer {
             nvgEndFrame(vg);
 
 
-
-            renderTextAlfa(display.getWidth()/2, display.getHeight()/2-80, "+", 80, 200);
+            renderTextAlfa(display.getWidth() / 2, display.getHeight() / 2 - 80, "+", 80, 200);
 
 
             display.restoreState();
+
             glPopMatrix();
 
+
+            if (prevWireModState) {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
         }
 
 

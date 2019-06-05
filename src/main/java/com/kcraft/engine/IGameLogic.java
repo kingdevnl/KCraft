@@ -2,10 +2,14 @@ package com.kcraft.engine;
 
 import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
-import com.kcraft.engine.render.IRenderer;
+import com.kcraft.engine.render.IRenderable;
 import com.kcraft.engine.render.RenderMaster;
 import com.kcraft.engine.shader.Shader;
+import com.kcraft.engine.state.GameState;
+import com.kcraft.engine.utils.ITickable;
 import org.joml.Vector3f;
+
+import java.util.List;
 
 public abstract class IGameLogic {
 
@@ -14,9 +18,13 @@ public abstract class IGameLogic {
 
     public abstract void init(Display display);
 
-    public abstract void render(RenderMaster renderMaster, Camera camera, Shader shader, RenderState state);
+    public void render(RenderMaster renderMaster, Camera camera, Shader shader, RenderState state) {
 
-    public abstract void update();
+    }
+
+    public void update() {
+
+    }
 
     public void onKeyPress(int key){}
 
@@ -43,10 +51,22 @@ public abstract class IGameLogic {
     public void addGameItem(GameItem gameItem) {
         getRenderMaster().getGameItems().add(gameItem);
     }
-    public void addRenderer(IRenderer renderer) {
+    public void addRenderable(IRenderable renderer) {
         engine.getRenderers().add(renderer);
     }
+    public void addTickable(ITickable tickable) {
+        engine.getTickables().add(tickable);
+    }
+    public List<GameItem> getGameItems() {
+        return engine.renderMaster.getGameItems();
+    }
 
+    public GameState getGameState() {
+        return engine.getGameState();
+    }
+    public void setGameState(GameState state) {
+        engine.setGameState(state);
+    }
 
 
 }

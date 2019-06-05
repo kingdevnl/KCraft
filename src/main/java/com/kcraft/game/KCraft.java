@@ -2,12 +2,15 @@ package com.kcraft.game;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kcraft.engine.GameItem;
 import com.kcraft.engine.IGameLogic;
 import com.kcraft.engine.RenderState;
-import com.kcraft.engine.camera.Camera;
 import com.kcraft.engine.display.Display;
-import com.kcraft.engine.render.RenderMaster;
-import com.kcraft.engine.shader.Shader;
+import com.kcraft.engine.render.Mesh;
+import com.kcraft.engine.render.model.OBJLoader;
+import com.kcraft.engine.state.GameState;
+import com.kcraft.engine.texture.TextureLoader;
+import com.kcraft.engine.utils.ITickable;
 import com.kcraft.engine.utils.VectorUtils;
 import com.kcraft.game.block.Block;
 import com.kcraft.game.block.BlockType;
@@ -19,16 +22,12 @@ import org.joml.Vector3i;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import java.util.Random;
-
 import static org.lwjgl.opengl.GL11.*;
 
 
 public class KCraft extends IGameLogic {
 
     public static Gson gson = new GsonBuilder().create();
-    public static Random random = new Random();
-
 
     private HUD hud = new HUD();
 
@@ -43,23 +42,30 @@ public class KCraft extends IGameLogic {
 
     private World world;
 
-
     @Override
     public void init(Display display) {
         kCraft = this;
-        world = new World("Default", 30);
+
+
+
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
+
+        world = new World("Default", 60);
         try {
             BlockMeshes.createMeshes();
 
-            addRenderer(world);
-            addRenderer(hud);
 
-            world.generateFlatWorld();
+            addRenderable(world);
+            addRenderable(hud);
+
+            world.genWorld();
             engine.camera.setPosition(7, .9f, -1);
 
 
-
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 
@@ -68,51 +74,19 @@ public class KCraft extends IGameLogic {
 
         hud.init();
 
+        GL11.glClearColor(100f / 255f, 149f / 255f, 237f / 255f, 1f);
+
+        setGameState(GameState.INGAME);
+
 
         engine.startLoop();
 
     }
 
-    @Override
-    public boolean canCameraMove(Camera camera, Vector3f oldPos, Vector3f position) {
-
-        if(position.y < oldPos.y) {
-            //Going down
-
-            Vector3i blockPos = VectorUtils.convertToInt(position);
-
-
-        }
-
-
-        return true;
-    }
-
-    @Override
-    public void render(RenderMaster renderMaster, Camera camera, Shader shader, RenderState state) {
-
-        if (state == RenderState.PRE) {
-            GL11.glClearColor(100f / 255f, 149f / 255f, 237f / 255f, 1f);
-        }
-    }
-
-
-    private int frames;
-
-    @Override
-    public void update() {
-
-        frames++;
-        if (frames >= 10) {
-
-            frames = 0;
-        }
-
-    }
 
     @Override
     public void onKeyPress(int key) {
-        if(key == GLFW.GLFW_KEY_INSERT) {
+        if (key == GLFW.GLFW_KEY_INSERT) {
 
             Vector3f position = engine.camera.getPosition();
             Block block = new Block(BlockType.COBBLE);
@@ -120,7 +94,7 @@ public class KCraft extends IGameLogic {
             world.addBlock(block);
 
         }
-        if(key == GLFW.GLFW_KEY_DELETE) {
+        if (key == GLFW.GLFW_KEY_DELETE) {
             Vector3i pos = VectorUtils.convertToInt(VectorUtils.normalize3f(engine.camera.getPosition()));
 
             world.setBlock(pos.x, pos.y, pos.z, null);
@@ -136,6 +110,6 @@ public class KCraft extends IGameLogic {
     }
 
     public World getWorld() {
-    return this.world;
+        return this.world;
     }
 }
