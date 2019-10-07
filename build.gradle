@@ -82,7 +82,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.l33tlabs.twl/pngdecoder
     shade group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
 
-    shade 'com.google.code.gson:gson:2.8.5'
+    shade 'com.google.code.gson:gson:2.8.6'
 
     String jimgui_version = 'v0.7'
     compile "org.ice1000.jimgui:core:$jimgui_version" // basic functionality
