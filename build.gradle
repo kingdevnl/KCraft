@@ -84,7 +84,7 @@ dependencies {
 
     shade 'com.google.code.gson:gson:2.8.5'
 
-    String jimgui_version = 'v0.7'
+    String jimgui_version = 'v0.10'
     compile "org.ice1000.jimgui:core:$jimgui_version" // basic functionality
     compile "org.ice1000.jimgui:extension:$jimgui_version" // basic functionality
 
